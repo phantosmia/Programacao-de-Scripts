@@ -23,3 +23,16 @@ Nao se pode cadastrar/procurar animais por raca pois nao eh o foco do projeto. P
 O foco eh a adocao.
 Perguntar sobre o comportamento do animal, com uma pergunta radio button se esse animal eh agressivo ou nao e se esta doente ou nao (pedir descricao sobre a doenca).
 "Quem ve raca, nao ve coracao!"
+
+Falhas de seguranca
+
+- id do animal sendo passado e deletado/modificado livremente
+- remover imagem do animal quando ele for removido
+- deve ter um captcha para insercao do animal
+- dropdown so funciona no chrome
+- nao aceitar objetos q nao sejam imagem ja no javascript
+- limite de caracteres tanto na hora de cadastrar como na hora de editar
+- editar nao deve permitir que o usuario exclua todo o texto do campo.
+- caso o usuario mudar o valor da select options, isso nao eh detectado
+- layout desproporcional no firefox
+- imagem obrigatoria.

@@ -1,69 +1,95 @@
-<?php
 
-$con = mysqli_connect("localhost","root","","projetorenzo");
-$sql = "SELECT* FROM ANIMAIS ORDER BY ID DESC LIMIT 1";
-$result = $con->query($sql);
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
+<head>
+<script src="js/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+  <script type="text/javascript">
 
-        $id_imagem = $row['id']+1;
+    // Original JavaScript code by Chirp Internet: www.chirp.com.au
+    // Please acknowledge use of this code by including this header.
+
+    var modal_init = function() {
+
+      modalWrapper = document.getElementById("modal_wrapper");
+      var modalWindow  = document.getElementById("modal_window");
+
+      var openModal = function(e)
+      {
+        modalWrapper.className = "overlay";
+        var overflow = modalWindow.offsetHeight - document.documentElement.clientHeight;
+        if(overflow > 0) {
+          modalWindow.style.maxHeight = (parseInt(window.getComputedStyle(modalWindow).height) - overflow) + "px";
+        }
+        modalWindow.style.marginTop = (-modalWindow.offsetHeight)/2 + "px";
+        modalWindow.style.marginLeft = (-modalWindow.offsetWidth)/2 + "px";
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      };
+
+      var closeModal = function(e)
+      {
+        modalWrapper.className = "";
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      };
+
+      var clickHandler = function(e) {
+        if(!e.target) e.target = e.srcElement;
+        if(e.target.tagName == "DIV") {
+          if(e.target.id != "modal_window") closeModal(e);
+        }
+      };
+
+      var keyHandler = function(e) {
+        if(e.keyCode == 27) closeModal(e);
+      };
+
+      if(document.addEventListener) {
+        document.getElementById("modal_open").addEventListener("click", openModal, false);
+        document.getElementById("modal_close").addEventListener("click", closeModal, false);
+      //  console.log("ola");
+        //document.addEventListener("click", clickHandler, false);
+        //document.addEventListener("keydown", keyHandler, false);
+      } else {
+       document.getElementById("modal_open").attachEvent("onclick", openModal);
+        document.getElementById("modal_close").attachEvent("onclick", closeModal);
+        //document.attachEvent("onclick", clickHandler);
+        //document.attachEvent("onkeydown", keyHandler);
+      }
+
+    };
+
+  </script>
+
+
+<script>
+
+var loadFile = function(event) {
+
+output = document.getElementById('output');
+output.src = URL.createObjectURL(event.target.files[0]);
+//output.width = "360px";
+//output.height = "240px";
+};
+</script>
+  <script type="text/javascript">
+
+    if(document.addEventListener) {
+      //document.getElementById("modal_feedback").addEventListener("submit", checkForm, false);
+      document.addEventListener("DOMContentLoaded", modal_init, false);
+
+    } else {
+      //document.getElementById("modal_feedback").attachEvent("onsubmit", checkForm);
+      window.attachEvent("onload", modal_init);
     }
-} else {
-    echo "0 results";
-  }
-if(!$con)
-  die(mysql_error());
-else{
-  if(isset($_POST['remover'])){
-    $sql = "DELETE FROM animais WHERE id=".$_GET["animalRemover"]."";
 
-if ($con->query($sql) === TRUE) {
-    echo "Record deleted successfully";
-} else {
-    echo "Error deleting record: " . $con->error;
-}
-  }
-  if(isset($_POST['submit']))
-  {
-    if($_POST['nomeAnimal'] == "")
-      $_POST['nomeAnimal'] = "Sem nome";
-    $name=$_FILES['file']['name'];
-    $type=$_FILES['file']['type'];
-    $temp = explode(".", $_FILES["file"]["name"]);
-    $newfilename = $id_imagem .$_POST['nomeAnimal'] . '.' . end($temp);
+  </script>
 
-    if($type=='image/jpeg' || $type=='image/png' || $type=='image/gif' || $type=='image/pjpeg')
-    {
-       $up=move_uploaded_file($_FILES['file']['tmp_name'],'Imagens/Animais/'.$newfilename);
-       $q=mysqli_query($con,"insert into animais (caminhoImagem, Estado, Cidade, Endereco, Nome, Tipo, Descricao, Sexo) values('".$newfilename."','".$_POST['estado']."','".$_POST ['cidade']."','".$_POST['endereco']."','".$_POST['nomeAnimal']."','".$_POST['tipoAnimal']."','".$_POST['descricao']."','".$_POST['sexo']."')");
-   if($up && $q)
-   {
-    header("Refresh:0");
-   }
-   elseif(!$up)
-   {
-    echo'image not uploaded';
-   }
-   elseif(!$q)
-   {
-  echo("Error description: " . mysqli_error($con));
-   }
-  }
-
-    else
-    {
-     echo'Invalid file type';
-    }
-  }
-}
-?>
-
+</head>
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <body>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
+
+
+
     <title>Adote hoje!</title>
 
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -145,6 +171,7 @@ if ($con->query($sql) === TRUE) {
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
+  <script src="js/crud.js"></script>
   <script src="js/index.js"></script>
     <script src="js/jsmin2.0.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -154,7 +181,7 @@ if ($con->query($sql) === TRUE) {
 
   <link rel='stylesheet prefetch' href='css/bootstrap2.3.1.css'>
   <link rel="stylesheet" href="css/style.css"/>
-
+<link rel="stylesheet" type="text/css" href="css/editarDiv.css" />
     <link rel="stylesheet" type="text/css" href="css/fancy.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
 
@@ -171,59 +198,46 @@ if ($con->query($sql) === TRUE) {
   <div class="row-fluid">
   <div class="span12">
     <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">Cadastro</a></li>
-    <li><a data-toggle="tab" href="#menu1">Animais Cadastrados<?php
-    $con=mysqli_connect("localhost","root","","projetorenzo");
-    // Check connection
-    if (mysqli_connect_errno())
-      {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-      }
 
-    $sql="SELECT * from animais";
-
-    if ($result=mysqli_query($con,$sql))
-      {
-      // Return the number of rows in result set
-      $rowcount=mysqli_num_rows($result);
-      printf("(".$rowcount.')');
-      // Free result set
-      mysqli_free_result($result);
-      }
-
-    mysqli_close($con);
-    ?></a></li>
+    <li class="active"><a data-toggle="tab" href="#menu1">Animais Cadastrados</a></li>
 
   </ul>
   <br>
-  <div class="tab-content">
-  <div id="home" class="tab-pane fade in active">
-  <form action="cadastroAnimais.php" method="post" width ="80px" height="100px" enctype="multipart/form-data">
+
+<div id="modal_wrapper">
+<div id="modal_window">
+
+<div style="text-align: right;"><a id="modal_close" href="#">close <b>X</b></a></div>
+  <form  id="modal_feedback" method="post"  action="insertAnimais.php" enctype="multipart/form-data" width ="80px" height="100px">
+
     <fieldset class="form-group">
       <label for="exampleInputFile">Imagem do Animal</label>
-      <input type="file" class="form-control-file" onchange="loadFile(event)" name="file" id="exampleInputFile">
-      <img id = "output" width="360px" height="240px"/>
+      <input type="file" class="form-control-file" onchange="loadFile(event)" name="file" id="file">
+      <div id ="outputdiv"><img id = "output" width="360px" height="240px"/> </div>
     </fieldset>
   <fieldset class="form-group">
       <label for="exampleSelect1">Estado</label>
       <select class="form-control" name="estado" id="estado">
 
       </select>
+      <label id="noStateSupplied"> </label>
     </fieldset>
     <fieldset class="form-group">
       <label for="exampleSelect1">Cidade</label>
       <select class="form-control" name="cidade" id="cidade">
 
       </select>
+      <label id="noCitySupplied"> </label>
     </fieldset>
 
     <fieldset class="form-group">
       <label>Endereço</label>
-      <input type="" class="form-control" name="endereco" placeholder="Endereço">
+      <input type="" class="form-control" id="endereco" name="endereco" placeholder="Endereço">
+      <label id="noAddressSupplied"> </label>
     </fieldset>
     <fieldset class="form-group">
       <label >Se o animal possuir um nome, digite-o no campo abaixo</label>
-      <input type="" class="form-control" name="nomeAnimal" placeholder="Sem Nome">
+      <input type="" class="form-control" id="nomeAnimal" name="nomeAnimal" placeholder="Sem Nome">
     </fieldset>
     <fieldset class="form-group">
       <label for="exampleSelect1">O animal é um</label>
@@ -234,13 +248,14 @@ if ($con->query($sql) === TRUE) {
     </fieldset>
     <fieldset class="form-group">
       <label for="exampleTextarea">Descreva o animal:</label>
-      <textarea class="form-control" name="descricao" id="exampleTextarea" rows="3"></textarea>
+      <textarea class="form-control" name="descricao" id="descricao" rows="3"></textarea>
+      <label id="noDescriptionSupplied"> </label>
     </fieldset>
 
     <div class="radio">
       <label>
         <input type="radio" id="optionsRadios1" name="sexo" value="Fêmea" checked>
-        Fêmea <img src="Imagens/Icones/Femea-25.png"
+        Fêmea <img src="Imagens/Icones/Femea-25.png">
       </label>
     </div>
     <div class="radio">
@@ -250,67 +265,64 @@ if ($con->query($sql) === TRUE) {
       </label>
     </div>
 
-    <button type="submit" name="submit" class="btn btn-primary">Cadastrar</button>
+    <button type="button" onclick="add();" name="submit" class="btn btn-primary">Cadastrar</button>
   </form>
 </div>
-<?php
-    echo '<div id="menu1" class="tab-pane fade">
+</div>
+
+<div id="menu1">
+    <button type="button"  id="modal_open" class="btn btn-success btn-lg">Cadastrar novo animal</button> <!-- id="modal_open"-->
     <div class="container-fluid1">
+
 <div class="row-fluid">
 <div class="span12">
     <div class="carousel slide" id="myCarousel">
         <div class="carousel-inner">
-            <div class="item active">';
-            $con = mysqli_connect("localhost","root","","projetorenzo");
-            $sql = "SELECT* FROM ANIMAIS ORDER BY ID DESC";
-            $result = $con->query($sql);
-            define('COLS', 4); // number of columns
-            $col = 0; // number of the last column filled
-            if ($result->num_rows > 0) {
-                // output data of each row
-                while($row = $result->fetch_assoc()) {
-                    $col++;
-                    echo '<li class="span3">
-                        <div class="thumbnail">
 
-                        <a href="#"><img width="360" height="240"src="Imagens/Animais/'.$row['caminhoImagem'].'" alt=""></a>
-                        <div class="caption" width="360" height="240">
-                            <h4>'.$row['Nome'].'</h4>
-                    <p>'.$row['Descricao'].'</p>
-                    <form method="post" action="cadastroAnimais.php?animalRemover='.$row['id'].'" enctype="multipart/form-data" method="get">
-                            <button type="submit" name="remover" class="btn btn-danger btn-mini" >&raquo; REMOVER</a>
-                        </div>
+            <div id="carousel" class="item active">
+              <?php
+              $con = mysqli_connect("localhost","root","","projetorenzo");
+              $sql = "SELECT* FROM ANIMAIS ORDER BY ID DESC";
+              $result = $con->query($sql);
+              define('COLS', 4); // number of columns
+              $col = 0; // number of the last column filled
+              if ($result->num_rows > 0) {
+                  // output data of each row
+                  while($row = $result->fetch_assoc()) {
+                      $col++;
+                      echo '<li id = "'.$row['id'].'"class="span3">
+                          <div class="thumbnail">
+
+                          <a href="#"><img width="360" height="240"src="Imagens/Animais/'.$row['caminhoImagem'].'" alt=""></a>
+                          <div class="caption" width="360" height="240">
+                          <div  id="name" class="resultContainer" style="width: 100%; overflow: hidden;"> <div id="nameEdited" class="textBoxContainer" style ="float: left; width:200px;"contentEditable="true">   <h4>'.$row['Nome'].'</h4></div>  <div class="viewThisResult" style="marginLeft:20px;"contentEditable="false"><img src="Imagens/Icones/Edit-12.png" style="
+    margin: 5px;"></div></div>
+                  <div  id="description2" class="resultContainer" style="width: 100%; overflow: hidden;"> <div id="descriptionEdited" class="textBoxContainer" style ="float: left; width:200px;"contentEditable="true">     <p>'.$row['Descricao'].'</p></div> <div class="viewThisResult" style="marginLeft:20px;"contentEditable="false"><img src="Imagens/Icones/Edit-12.png" style="
+margin: 5px;"></div></div>
+
+                              <button type="submit" name="remover" onclick="apagar('.$row['id'].')" class="btn btn-danger btn-mini" >&raquo; REMOVER</a>
                           </div>
-                    </li>';
-                    if($col == COLS){
-                      $col = 0;
-                      echo '</ul>';
-                    }
+                            </div>
+                      </li>';
+                      if($col == COLS){
+                        $col = 0;
+                        echo '</ul>';
+                      }
+                  }
+              } else {
+                //  echo "0 results";
                 }
-            } else {
-                echo "0 results";
-              }
-        ?>
-  <script>
-    var loadFile = function(event) {
-      var output = document.getElementById('output');
-      output.src = URL.createObjectURL(event.target.files[0]);
-    };
-  </script>
-  <script language="javascript">
-  $(document).ready(function(e) {
-  try {
-  $('#animalSelect').msDropDown();
-  } catch(e) {
-  alert(e.message);
-  }
-  try {
-  $('#animalSelectCadastro').msDropDown();
-  } catch(e) {
-  alert(e.message);
-  }
-  });
-  </script>
+                    ?>
+                  </div>
+                </div>
+              </div>
+              <div id="wait" style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;"><img src='Imagens/Icones/loadingcat.gif' width="64" height="64" /><br>Carregando..</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
   <script type="text/javascript" src="js/cidades-estados.js"></script>
   <script type="text/javascript">
   window.onload = function() {
@@ -327,4 +339,71 @@ if ($con->query($sql) === TRUE) {
 
 
   </script>
+  <script language="javascript">
+  $(document).ready(function(e) {
+  try {
+  $('#animalSelect').msDropDown();
+  } catch(e) {
+  alert(e.message);
+  }
+  try {
+  $('#animalSelectCadastro').msDropDown();
+  } catch(e) {
+  alert(e.message);
+  }
+  });
+  </script>
+  <style type="text/css">
+
+  #modal_wrapper.overlay:before {
+    content: " ";
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    background: #000;
+    background: rgba(0,0,0,0.7);
+  }
+
+  #modal_window {
+    display: none;
+    z-index: 200;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 360px;
+    overflow: auto;
+    padding: 10px 20px;
+    background: #fff;
+    border: 5px solid #999;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+
+  #modal_wrapper.overlay #modal_window {
+    display: block;
+  }
+
+  </style>
+  <script>
+$(document).ready(function(){
+    $(document).ajaxStart(function(){
+        $("#wait").css("display", "block");
+    });
+    $(document).ajaxComplete(function(){
+        setTimeout( "jQuery('#wait').hide();", 1000 );
+    });
+
+});
+$('#name').on('keydown', function(e) {
+  if (e.which == 13) {
+    //Prevent insertion of a return
+    //You could do other things here, for example
+    //focus on the next field
+    return false;
+  }
+});
+</script>
   <!-- fim do form -->

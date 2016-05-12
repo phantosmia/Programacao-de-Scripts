@@ -1,4 +1,5 @@
 <?php
+
 $id_imagem = 1;
 $con = mysqli_connect("localhost","root","","projetorenzo");
 $sql = "SELECT* FROM ANIMAIS ORDER BY ID DESC LIMIT 1";
@@ -13,6 +14,8 @@ if ($result->num_rows > 0) {
 } else {
     //echo "0 results";
   }
+
+
 if(isset($_FILES["file"]["type"]))
 {
 $validextensions = array("jpeg", "jpg", "png");

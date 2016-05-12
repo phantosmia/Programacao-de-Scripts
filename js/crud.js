@@ -135,7 +135,7 @@ function add() {
           document.getElementById("noAddressSupplied").innerHTML="";
         }
         else{
-              console.log("oi");
+            
               $.ajax({
                 url: "php/insertAnimais.php", // Url to which the request is send
                 type: "POST",             // Type of request to be send, called as method
